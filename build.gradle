@@ -1,0 +1,51 @@
+plugins {
+    id "java"
+    id "application"
+}
+
+group "ru.craftysoft"
+version "1.0.0"
+
+sourceCompatibility = 11
+
+dependencies {
+    compile platform("org.apache.logging.log4j:log4j-bom:2.13.3")
+    compile(
+            "commons-cli:commons-cli:1.4",
+
+            "org.apache.logging.log4j:log4j-api",
+            "org.apache.logging.log4j:log4j-core"
+    )
+    testCompile(
+            "org.junit.jupiter:junit-jupiter:5.6.2",
+            "org.assertj:assertj-core:3.16.1"
+    )
+}
+
+test {
+    useJUnitPlatform {
+        excludeEngines "junit-vintage"
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
+
+jar {
+    mainClassName = "ru.craftysoft.irrigationsystemservice.Application"
+    manifest {
+        attributes("Main-Class": "$mainClassName")
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
