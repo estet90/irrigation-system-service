@@ -33,7 +33,7 @@ public class PositionDeterminationOperation {
                         irrigationSystemAngle = Double.parseDouble(irrigationSystemPositions[2]) * Math.PI / 180;
                         continue;
                     } catch (Exception e) {
-                        logger.info("{}.end ошибка при получении информации о позиции поливалки: '{}'. Прекращаем обработку.", point, e.getMessage());
+                        logger.error("{}.end ошибка при получении информации о позиции поливалки: '{}'. Прекращаем обработку.", point, e.getMessage());
                         throw e;
                     }
                 }
@@ -44,14 +44,14 @@ public class PositionDeterminationOperation {
                     var flowerPositionY = Double.parseDouble(flowersData[2]);
                     addFlowerToGrouping(flowersByAngleAndNameGrouping, irrigationSystemPositionX, irrigationSystemPositionY, name, flowerPositionX, flowerPositionY);
                 } catch (Exception e) {
-                    logger.info("{}.continue ошибка при добавлении информации о цветке: '{}'. Продолжаем обработку.", point, e.getMessage());
+                    logger.warn("{}.continue ошибка при добавлении информации о цветке: '{}'. Продолжаем обработку.", point, e.getMessage());
                 }
             }
             double result = getResult(flowersByAngleAndNameGrouping, irrigationSystemAngle);
             logger.info("{}.out result={}", point, result);
             return result;
         } catch (Exception e) {
-            logger.info("{}.thrown {}", point, e.getMessage());
+            logger.error("{}.thrown {}", point, e.getMessage());
             throw e;
         }
     }
